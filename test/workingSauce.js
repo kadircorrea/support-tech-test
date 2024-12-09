@@ -49,6 +49,11 @@ describe('Working Sauce', function () {
     await textBox.sendKeys('Sauce');
 
     // Task III
+    await driver.findElement(By.id('fbemail')).sendKeys('kadircorrea@gmail.com');
+    await driver.findElement(By.id('comments')).sendKeys('This is a test');
+    await driver.findElement(By.id('submit')).click();
+    
+
 
     await driver.quit();
     });
