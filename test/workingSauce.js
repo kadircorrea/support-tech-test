@@ -41,10 +41,12 @@ describe('Working Sauce', function () {
     await assert.strictEqual("I am a page title - Sauce Labs", await driver.getTitle());
 
     // Task I
-    await driver.findElement(By.id('i am a link')).click();
+    //await driver.findElement(By.id('i am a link')).click();
 
     // Task II
-
+    const textBox = await driver.findElement(By.id('i_am_a_textbox'));
+    await textBox.clear();
+    await textBox.sendKeys('Sauce');
 
     // Task III
 
