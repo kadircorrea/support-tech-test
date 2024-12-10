@@ -5,6 +5,8 @@ const utils = require('./utils')
 
 const SAUCE_USERNAME = process.env.SAUCE_USERNAME;
 const SAUCE_ACCESS_KEY = process.env.SAUCE_ACCESS_KEY;
+const API_EU_SERVER = "https://api.eu-central-1.saucelabs.com/"
+
 //const ONDEMAND_URL = `https://${SAUCE_USERNAME}:${SAUCE_ACCESS_KEY}@ondemand.saucelabs.com:443/wd/hub`;
 // NOTE: Use the URL below if using our EU datacenter (e.g. logged in to app.eu-central-1.saucelabs.com)
 const ONDEMAND_URL = `https://${SAUCE_USERNAME}:${SAUCE_ACCESS_KEY}@ondemand.eu-central-1.saucelabs.com:443/wd/hub`;
@@ -53,6 +55,18 @@ describe('Working Sauce', function () {
     await driver.findElement(By.id('comments')).sendKeys('This is a test');
     await driver.findElement(By.id('submit')).click();
     
+    //Task V
+    const myAccount = new SauceLabs({
+        user: SAUCE_USERNAME,
+        key: SAUCE_ACCESS_KEY,
+        region: 'eu',
+      });
+    const lastJob = await myAccount.listJobs(process.env.SAUCE_USERNAME, {
+    limit: 1,
+    full: true,
+    });
+    const jobId=lastJob.jobs[0].id;
+    myAccount.updateJob(SAUCE_USERNAME,jobId,{"passed":true})
 
 
     await driver.quit();
