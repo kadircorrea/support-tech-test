@@ -3,9 +3,9 @@ const utils = require('./utils')
 
 const SAUCE_USERNAME = process.env.SAUCE_USERNAME;
 const SAUCE_ACCESS_KEY = process.env.SAUCE_ACCESS_KEY;
-const ONDEMAND_URL = `https://${SAUCE_USERNAME}:${SAUCE_ACCESS_KEY}@ondemand.us-west-1.saucelabs.com:443/wd/hub`;
+//const ONDEMAND_URL = `https://${SAUCE_USERNAME}:${SAUCE_ACCESS_KEY}@ondemand.us-west-1.saucelabs.com:443/wd/hub`;
 // NOTE: Use the URL below if using our EU datacenter (e.g. logged in to app.eu-central-1.saucelabs.com)
-// const ONDEMAND_URL = `https://${SAUCE_USERNAME}:${SAUCE_ACCESS_KEY}@ondemand.eu-central-1.saucelabs.com:443/wd/hub`;
+const ONDEMAND_URL = `https://${SAUCE_USERNAME}:${SAUCE_ACCESS_KEY}@ondemand.eu-central-1.saucelabs.com:443/wd/hub`;
 
 
 /**
@@ -28,14 +28,22 @@ describe('Broken Sauce', function () {
         // will have to code around that or use the us-west-1 datacenter.
         // You can investigate the modal elements using a Live Test(https://app.saucelabs.com/live/web-testing)
 
-
-        let search = await driver.findElement(By.name("Search"));
+    
+        let search = await driver.findElement(By.name("q"));
         await search.sendKeys("Sauce Labs");
         
         let button = await driver.findElement(By.name("btnK"))
         await button.click()
 
         let page = await driver.findElement(By.partialLinkText("sauce"));
+        await page.click();
+        
+        let resourcesLink = await driver.findElement(By.xpath('//*[@id="__next"]/header/div/div/div[1]/div[2]/div[5]/div[1]/div[1]/span'));
+        const actions = driver.actions({async: true});
+        await actions.move({ origin: resourcesLink }).perform();
+        await driver.findElement(By.xpath('//*[@id="__next"]/header/div/div/div[1]/div[2]/div[5]/div[2]/div/div[1]/div/div[1]/div/div[2]/div[1]/div[1]/a/div/div[2]')).click();
+
+
 
         await driver.quit();
         } catch (err) {
